@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
@@ -38,6 +39,19 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         } else {
             // その他のViewControllerは通常のタブ切り替えを実施
             return true
+        }
+    }
+    
+//    TabBarControllerが表示される度にログイン状態を確認する処理を viewDidAppear(_:) メソッドの中に記述（tabbarController画面に戻ってくるたびに）
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+//        currentUserがnilならログインしていない
+//        Firebase/Authは、ユーザー登録やログイン認証を管理するアプリ。
+        if Auth.auth().currentUser == nil{
+//            ログインしていない時の処理
+            let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "Login")
+                        self.present(loginViewController!, animated: true, completion: nil)
         }
     }
     
